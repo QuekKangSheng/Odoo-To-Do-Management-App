@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- List View -->
+    <!-- List View with color-coded rows and badge -->
     <record id="view_todo_list_tree" model="ir.ui.view">
         <field name="name">todo.list.tree</field>
         <field name="model">todo.list</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-success="status == 'complete'"
+                  decoration-warning="status == 'in_progress'"
+                  decoration-muted="status == 'draft'">
                 <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="start_date"/>
                 <field name="end_date"/>
-                <field name="status"/>
+                <field name="items_progress"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'complete'"
+                       decoration-warning="status == 'in_progress'"
+                       decoration-danger="status == 'draft'"/>
             </tree>
         </field>
     </record>
@@ -23,13 +29,11 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <!-- Visible only when Draft -->
                     <button name="action_start"
                             string="Start"
                             type="object"
                             class="btn-primary"
                             invisible="status != 'draft'"/>
-                    <!-- Visible only when In Progress AND all items done -->
                     <button name="action_complete"
                             string="Mark as Complete"
                             type="object"
@@ -41,19 +45,30 @@
                 </header>
                 <sheet>
                     <field name="all_items_done" invisible="1"/>
+
+                    <!-- Progress banner -->
+                    <div class="alert alert-info d-flex align-items-center mb-3"
+                         invisible="status == 'draft'">
+                        <strong>Progress: </strong>
+                        <field name="items_progress"
+                               readonly="1"
+                               nolabel="1"
+                               class="ms-2"/>
+                    </div>
+
                     <group>
                         <group string="General Info">
                             <field name="name"
-                                readonly="status == 'complete'"/>
+                                   readonly="status == 'complete'"/>
                             <field name="tag_ids"
-                                widget="many2many_tags"
-                                readonly="status == 'complete'"/>
+                                   widget="many2many_tags"
+                                   readonly="status == 'complete'"/>
                         </group>
                         <group string="Dates">
                             <field name="start_date"
-                                readonly="status == 'complete'"/>
+                                   readonly="status == 'complete'"/>
                             <field name="end_date"
-                                readonly="status == 'complete'"/>
+                                   readonly="status == 'complete'"/>
                         </group>
                     </group>
 
@@ -84,25 +99,47 @@
         </field>
     </record>
 
-    <!-- Actions -->
+    <!-- Search View -->
+    <record id="view_todo_list_search" model="ir.ui.view">
+        <field name="name">todo.list.search</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <search string="Search Todo Lists">
+
+                <!-- Search by title and tags -->
+                <field name="name" string="Title"/>
+                <field name="tag_ids" string="Tags"/>
+
+                <!-- Two filters only -->
+                <filter string="Uncomplete"
+                        name="filter_uncomplete"
+                        domain="[('status', 'in', ['draft', 'in_progress'])]"/>
+                <filter string="Complete"
+                        name="filter_complete"
+                        domain="[('status', '=', 'complete')]"/>
+
+                <separator/>
+
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+                    <filter string="Status"
+                            name="group_by_status"
+                            context="{'group_by': 'status'}"/>
+                    <filter string="Tags"
+                            name="group_by_tags"
+                            context="{'group_by': 'tag_ids'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+    <!-- Single action — all records -->
     <record id="action_todo_list_all" model="ir.actions.act_window">
         <field name="name">Todo List</field>
         <field name="res_model">todo.list</field>
         <field name="view_mode">tree,form</field>
-    </record>
-
-    <record id="action_todo_list_uncomplete" model="ir.actions.act_window">
-        <field name="name">Todo List Uncomplete</field>
-        <field name="res_model">todo.list</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('status', '!=', 'complete')]</field>
-    </record>
-
-    <record id="action_todo_list_complete" model="ir.actions.act_window">
-        <field name="name">Todo List Complete</field>
-        <field name="res_model">todo.list</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('status', '=', 'complete')]</field>
+        <field name="search_view_id" ref="view_todo_list_search"/>
     </record>
 
 </odoo>

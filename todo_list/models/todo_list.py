@@ -19,6 +19,13 @@ class TodoList(models.Model):
     attendee_ids = fields.One2many('todo.attendee', 'todo_list_id', string='Attendees')
     all_items_done = fields.Boolean(compute='_compute_all_items_done', store=False)
 
+    # --- Progress Counter ---
+    items_progress = fields.Char(
+        string='Progress',
+        compute='_compute_items_progress',
+        store=False
+    )
+
     @api.constrains('start_date', 'end_date')
     def _check_dates(self):
         for rec in self:
@@ -32,6 +39,17 @@ class TodoList(models.Model):
                 rec.all_items_done = all(item.is_finished for item in rec.item_ids)
             else:
                 rec.all_items_done = False
+
+    # --- Progress Counter ---
+    @api.depends('item_ids.is_finished', 'item_ids')
+    def _compute_items_progress(self):
+        for rec in self:
+            total = len(rec.item_ids)
+            done = len(rec.item_ids.filtered(lambda i: i.is_finished))
+            if total == 0:
+                rec.items_progress = 'No items yet'
+            else:
+                rec.items_progress = f'{done} / {total} items done'
 
     def action_start(self):
         self.status = 'in_progress'
