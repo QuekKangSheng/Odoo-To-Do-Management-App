@@ -126,5 +126,5 @@ All development and testing is done on `develop`. Code is merged into `main` via
 
 ## Author
 
-Built by Quek Kang Sheng as part of the People Software Developer Internship Exercise.
+Built by Quek Kang Sheng as part of the Software Developer Internship Exercise/Assessment.
 ```
