@@ -26,7 +26,8 @@ This module allows internal users to create and manage todo lists with structure
 - "Mark as Complete" button appears automatically only when all items are checked
 - Assign attendees linked to existing Odoo users
 - All fields become read-only when status is Complete
-- Three filtered menu views — All, Uncomplete, Complete
+- Filter dropdown with Uncomplete (Draft + In Progress) and Complete options
+- Default view of the list would show all tasks regardless of status
 - Default tags pre-loaded on install — Work, Event, Life Achievement (more can be added)
 
 ---
@@ -99,7 +100,8 @@ All 10 requirements from the assessment have been tested and verified.
 | 7 | Todo items support inline editing without popup | ✅ Pass |
 | 8 | Mark as Complete button only appears when all items are checked | ✅ Pass |
 | 9 | All fields become read-only when status is Complete | ✅ Pass |
-| 10 | Three menu views correctly filter All, Uncomplete, and Complete records | ✅ Pass |
+| 10 | Filter dropdown correctly filters Uncomplete (Draft + In Progress) and Complete records | ✅ Pass |
+| 11 | Default view of the list would display all tasks regardless of status | ✅ Pass |
 
 ---
 
