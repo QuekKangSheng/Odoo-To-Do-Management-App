@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_todo_root"
+              name="Todo List"
+              sequence="10"/>
+
+    <menuitem id="menu_todo_all"
+              name="Todo List"
+              parent="menu_todo_root"
+              action="todo_list.action_todo_list_all"
+              sequence="1"/>
+
+    <menuitem id="menu_todo_uncomplete"
+              name="Todo List Uncomplete"
+              parent="menu_todo_root"
+              action="todo_list.action_todo_list_uncomplete"
+              sequence="2"/>
+
+    <menuitem id="menu_todo_complete"
+              name="Todo List Complete"
+              parent="menu_todo_root"
+              action="todo_list.action_todo_list_complete"
+              sequence="3"/>
+</odoo>
