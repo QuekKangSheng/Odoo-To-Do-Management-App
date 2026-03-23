@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_todo_list_tree" model="ir.ui.view">
+        <field name="name">todo.list.tree</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_todo_list_form" model="ir.ui.view">
+        <field name="name">todo.list.form</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!-- Visible only when Draft -->
+                    <button name="action_start"
+                            string="Start"
+                            type="object"
+                            class="btn-primary"
+                            invisible="status != 'draft'"/>
+                    <!-- Visible only when In Progress AND all items done -->
+                    <button name="action_complete"
+                            string="Mark as Complete"
+                            type="object"
+                            class="btn-success"
+                            invisible="status != 'in_progress' or not all_items_done"/>
+                    <field name="status"
+                           widget="statusbar"
+                           statusbar_visible="draft,in_progress,complete"/>
+                </header>
+                <sheet>
+                    <field name="all_items_done" invisible="1"/>
+                    <group>
+                        <group string="General Info">
+                            <field name="name"
+                                readonly="status == 'complete'"/>
+                            <field name="tag_ids"
+                                widget="many2many_tags"
+                                readonly="status == 'complete'"/>
+                        </group>
+                        <group string="Dates">
+                            <field name="start_date"
+                                readonly="status == 'complete'"/>
+                            <field name="end_date"
+                                readonly="status == 'complete'"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Todo Items">
+                            <field name="item_ids"
+                                   readonly="status == 'complete'">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="is_finished"
+                                           column_invisible="parent.status != 'in_progress'"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Attendees">
+                            <field name="attendee_ids"
+                                   readonly="status == 'complete'">
+                                <tree editable="bottom">
+                                    <field name="user_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_todo_list_all" model="ir.actions.act_window">
+        <field name="name">Todo List</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_todo_list_uncomplete" model="ir.actions.act_window">
+        <field name="name">Todo List Uncomplete</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('status', '!=', 'complete')]</field>
+    </record>
+
+    <record id="action_todo_list_complete" model="ir.actions.act_window">
+        <field name="name">Todo List Complete</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('status', '=', 'complete')]</field>
+    </record>
+
+</odoo>
