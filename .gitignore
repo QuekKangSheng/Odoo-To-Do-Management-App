@@ -1,0 +1,22 @@
+# Python compiled files - never commit these
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Odoo specific
+*.pot
+/odoo/addons/
+
+# Environment
+.env
+.venv
+env/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VSCode
+.vscode/
