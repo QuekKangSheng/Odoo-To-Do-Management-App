@@ -1,17 +1,17 @@
 # Odoo Todo List Management Module
 
-A custom Odoo 17 module for internal todo list management, built as part of a Software Developer Internship technical assessment.
+A custom Odoo 18 module for internal todo list management, built as part of a Software Developer Internship technical assessment.
 
 ---
 
 ## About
 
-This module allows internal users to create and manage todo lists with structured items, attendees, tags, and status tracking. It is built on the Odoo 17 framework using Python and XML, and is designed for productivity and task management within an organisation.
+This module allows internal users to create and manage todo lists with structured items, attendees, tags, and status tracking. It is built on the Odoo 18 framework using Python and XML, and is designed for productivity and task management within an organisation.
 
 ### Requirements
 - Docker Desktop
 - Git
-- Odoo 17 (via Docker)
+- Odoo 18 (via Docker)
 - PostgreSQL 15 (via Docker)
 
 ---
@@ -27,7 +27,7 @@ This module allows internal users to create and manage todo lists with structure
 - Assign attendees linked to existing Odoo users
 - All fields become read-only when status is Complete
 - Filter dropdown with Uncomplete (Draft + In Progress) and Complete options
-- Default view of the list would show all tasks regardless of status
+- Default view of the list displays all tasks regardless of status
 - Default tags pre-loaded on install — Work, Event, Life Achievement (more can be added)
 
 ---
@@ -54,7 +54,7 @@ todo_list/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/QuekKangSheng/Odoo-To-Do-Management-App.git 
+git clone https://github.com/QuekKangSheng/Odoo-To-Do-Management-App.git
 cd Odoo-To-Do-Management-App
 ```
 
@@ -75,19 +75,18 @@ Fill in the setup form with your preferred credentials:
 - **Password:** your chosen password
 - Leave Demo Data unticked
 - Click Create Database
-```
 
 ### 5. Enable Developer Mode
 Settings → scroll to bottom → Activate Developer Mode
 
-### 6. Install/Activate the module
+### 6. Install the module
 Apps → Update Apps List → search **Todo List** → Activate
 
 ---
 
 ## Test Results
 
-All 10 requirements from the assessment have been tested and verified.
+All 11 requirements from the assessment have been tested and verified.
 
 | # | Test | Result |
 |---|------|--------|
@@ -101,7 +100,7 @@ All 10 requirements from the assessment have been tested and verified.
 | 8 | Mark as Complete button only appears when all items are checked | ✅ Pass |
 | 9 | All fields become read-only when status is Complete | ✅ Pass |
 | 10 | Filter dropdown correctly filters Uncomplete (Draft + In Progress) and Complete records | ✅ Pass |
-| 11 | Default view of the list would display all tasks regardless of status | ✅ Pass |
+| 11 | Default view displays all tasks regardless of status | ✅ Pass |
 
 ---
 
@@ -116,9 +115,10 @@ All development and testing is done on `develop`. Code is merged into `main` via
 
 ---
 
-## Odoo 17 Compatibility Notes
+## Odoo 18 Compatibility Notes
 
-- Views use `<tree>` tag instead of the old `<list>` tag
+- Views use `<list>` tag for list view definitions
+- `view_mode` in actions uses `list,form`
 - Conditional visibility uses inline expressions e.g. `invisible="status != 'draft'"` instead of the deprecated `attrs=` syntax
 - Fields used in `invisible=` expressions must be declared in the view even if hidden e.g. `all_items_done`
 
